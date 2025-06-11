@@ -11,17 +11,64 @@ export default function JobForm({ onAddJob }) {
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
   const [status, setStatus] = useState("");
-  const [notes, setNotes] = useState("");
+  const [resume, setResume] = useState(null);
+  const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAddJob({ company, position, location, date, status, notes });
+    onAddJob({
+      company,
+      position,
+      location,
+      date,
+      status,
+      resume,
+      description,
+    });
+
+    const formData = new FormData();
+    formData.append("company", company);
+    formData.append("position", position);
+    formData.append("location", location);
+    formData.append("date", date);
+    formData.append("status", status);
+    formData.append("resume", resume);
+    formData.append("notes", description);
+
+    await fetch(
+      "https://7rokwmw9f4.execute-api.us-east-2.amazonaws.com/prod/submit-job",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    console.log("Job submitted:", {
+      company,
+      position,
+      location,
+      date,
+      status,
+      resume,
+      description,
+    });
+
     setCompany("");
     setPosition("");
     setLocation("");
     setDate("");
     setStatus("");
-    setNotes("");
+    setDescription("");
+  };
+
+  const handleFileChange = (e) => {
+    e.preventDefault();
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type === "application/pdf") {
+      setResume(selectedFile);
+    } else {
+      alert("Please upload a valid PDF file.");
+    }
   };
 
   return (
@@ -57,10 +104,18 @@ export default function JobForm({ onAddJob }) {
         <option value="offer">Offer</option>
         <option value="rejected">Rejected</option>
       </select>
+      <label htmlFor="resume">Resume:</label>
+      <input
+        type="file"
+        id="resume"
+        name="resume"
+        accept="application/pdf"
+        onChange={handleFileChange}
+      />
       <textarea
-        placeholder="Notes"
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
+        placeholder="Job Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
       <button type="submit">Add Job</button>
     </form>

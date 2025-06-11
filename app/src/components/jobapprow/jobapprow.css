@@ -26,17 +26,20 @@
   font-weight: 600;
   color: #1f2937;
   font-size: 16px;
+  text-align: center;
 }
 
 .job-position {
   color: #6b7280;
   font-size: 14px;
+  text-align: center;
 }
 
 .job-location,
 .job-date {
   color: #374151;
   font-size: 14px;
+  text-align: center;
 }
 
 .job-status {

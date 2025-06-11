@@ -12,7 +12,7 @@ export default function JobAppRow({ job }) {
       <div className="job-location">{job.location || "N/A"}</div>
       <div className="job-date">{job.date}</div>
       <div className="job-status">{job.status || "N/A"}</div>
-      <div className="job-notes">{job.notes || "No notes"}</div>
+      <div className="job-notes">{job.description || "No description"}</div>
     </div>
   );
 }
@@ -24,6 +24,6 @@ JobAppRow.propTypes = {
     location: PropTypes.string,
     date: PropTypes.string,
     status: PropTypes.string,
-    notes: PropTypes.string,
+    description: PropTypes.string,
   }).isRequired,
 };
